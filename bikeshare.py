@@ -212,7 +212,7 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     def seconds_to_hms(seconds):
-        """ Use to split seconds to hours, minutes and seconds """
+        """ Use to split seconds into hours, minutes and seconds """
 
         hours = int(seconds // 3600)
         seconds = seconds % 3600
