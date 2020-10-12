@@ -9,18 +9,18 @@ CITY_DATA = { 'chicago': 'chicago.csv',
 
 """The three lists bellow are used throughout the code to evaluate or reference user input"""
 cities = list(CITY_DATA)
-months = ['January','February','March','April','May','June','All']          
+months = ['January','February','March','April','May','June','All']
 days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','All']
 
-def input_check(entry, list_to_compare):    
+def input_check(entry, list_to_compare):
     """
     Used to evaluate user input and offer input suggestions when applicable
-    
+
     Returns:
     "word_match" variable with one of the values bellow:
         - "User input" when input is correct or input suggestion is accepted,
         - "No" when suggestion to wrong input is not accepted
-        - "None" when user input is wrong and no input suggestion were offered to user.    
+        - "None" when user input is wrong and no input suggestion were offered to user.
     """
     #Variable declaration
     word_list = list_to_compare
@@ -29,7 +29,7 @@ def input_check(entry, list_to_compare):
     confirmation = ''
     word_match = ''
     pass_value = .16
-    
+
     if entry.lower() == 'new york': #Makes it easier for users so they dont have to type the word "city" to get a correct entry
         word_match = 'new york city'
     else:
@@ -48,19 +48,19 @@ def input_check(entry, list_to_compare):
 
 
         if len(letters_match) <= 4:
-            pass_value = 0.50  
+            pass_value = 0.50
         elif len(letters_match) <= 6:
             pass_value = 0.20
 
         if letters_ratio <= pass_value and length_ratio <= pass_value:
             confirmation = input('Did you mean ' + letters_match.title() + '? y/n\n ')
             if confirmation[0:1].lower() == 'y':
-                word_match = letters_match    
+                word_match = letters_match
             else:
                 word_match = 'No'
         else:
-            word_match = 'None'  
-        
+            word_match = 'None'
+
     return word_match
 
 def get_filters():
@@ -72,11 +72,11 @@ def get_filters():
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
-    
+
     print('\n' + '-'*40)
-    print(' PYTHON PROJECT\n Created by: Gerardo Gonzalez\n Nanodegree Program: Programming for Data Science with python' )    
+    print(' PYTHON PROJECT\n Created by: Gerardo Gonzalez\n Nanodegree Program: Programming for Data Science with python' )
     print('-'*40 + '\n')
-    
+
     print('Hello! Let\'s explore some US bikeshare data!')
     # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     city = input('Enter a city, Chicago, New York or Washington:\n ').strip()
@@ -112,12 +112,12 @@ def get_filters():
     if day.lower() == 'all':
         day = day.lower()
     else:
-        day = day.title()   
+        day = day.title()
 
-    print('-'*40)   
-    
+    print('-'*40)
+
     print('SHOWING DATA FOR:\n CITY: {}\n MONTH: {}\n DAY OF WEEK: {}'.format(city.title(), month.title(), day.title()))
-    
+
     print('-'*40)
     return city, month, day
 
@@ -140,12 +140,12 @@ def load_data(city, month, day):
     df['day_of_week'] = df['Start Time'].dt.weekday_name
     df['hour'] = df['Start Time'].dt.hour
     df['trip'] = df['Start Station'] + ' to ' + df['End Station']
-    
+
     if month.lower() != 'all':
-        month = months.index(month) + 1 
-        
+        month = months.index(month) + 1
+
         df = df[df['month'] == month]
-        
+
     if day.lower() != 'all':
         df = df[df['day_of_week'] == day.title()]
 
@@ -158,15 +158,15 @@ def time_stats(df):
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
 
-    def time_to_12h(time_24h):        
+    def time_to_12h(time_24h):
         """Convert Time from 24 hour format to 12 hour format."""
-        
+
         time_12h = str(dt.time(time_24h, 0 , 0))
         time_12h = dt.datetime.strptime(time_12h[0:2], '%H')
         time_12h = time_12h.strftime("%I:%M %p")
-        
+
         return time_12h
-    
+
     # TO DO: display the most common month
     popular_month = df['month'].mode()[0]
     print('Most popular month: -------------> {}'.format(months[popular_month-1]))
@@ -211,29 +211,29 @@ def trip_duration_stats(df):
 
     print('\nCalculating Trip Duration...\n')
     start_time = time.time()
-    
+
     def seconds_to_hms(seconds):
         """ Use to split seconds to hours, minutes and seconds """
-        
+
         hours = int(seconds // 3600)
         seconds = seconds % 3600
         minutes = int(seconds // 60)
         seconds = int(seconds % 60)
-        
+
         return hours, minutes, seconds
 
     # TO DO: display total travel time
-    total_travel_time = df['Trip Duration'].sum() #Trip duration in dataframe is in seconds   
+    total_travel_time = df['Trip Duration'].sum() #Trip duration in dataframe is in seconds
     hours, minutes, seconds = seconds_to_hms(total_travel_time) #"seconds_to_hms" function used
     print('TOTAL TRAVEL TIME:\n {} hours\n {} min\n {} sec\n'.format(hours, minutes, seconds))
 
-    # TO DO: display mean travel time   
-    mean_travel_time = df['Trip Duration'].mean() #Trip duration in dataframe is in seconds, 
+    # TO DO: display mean travel time
+    mean_travel_time = df['Trip Duration'].mean() #Trip duration in dataframe is in seconds,
     hours, minutes, seconds = seconds_to_hms(mean_travel_time) #"seconds_to_hms" function used
     if hours == 0:
         print('MEAN TRAVEL TIME:\n {} min\n {} sec'.format(minutes, seconds))
     else:
-        print('MEAN TRAVEL TIME:\n {} hours\n {} min\n {} sec'.format(hours, minutes, seconds)) 
+        print('MEAN TRAVEL TIME:\n {} hours\n {} min\n {} sec'.format(hours, minutes, seconds))
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -251,9 +251,9 @@ def user_stats(df):
     print('USER TYPE COUNT:')
     print(user_type_cnt.to_string())
     print(' ')
-    
+
     # TO DO: Display counts of gender
-    try:        
+    try:
         df['Gender'].fillna('Not Defined', inplace=True)
         gender_count = (df['Gender'].value_counts())
         print('GENDER COUNT:')
@@ -263,7 +263,7 @@ def user_stats(df):
         print('*No data found for Gender in Washington')
 
     # TO DO: Display earliest, most recent, and most common year of birth
-    try:        
+    try:
         earliest_birth_year = int(df['Birth Year'].min())
         most_recent_birth_year = int(df['Birth Year'].max())
         most_common_birth_year = int(df['Birth Year'].mode()[0])
@@ -277,8 +277,8 @@ def user_stats(df):
 
 def main():
     while True:
-        city, month, day = get_filters()
-        df = load_data(city, month, day)
+        #city, month, day = get_filters()
+        df = load_data(*get_filters())
         try:
             see_raw_data = input('Would you like to see 5 lines of raw data: y/n.\n ')
             if see_raw_data[0:1].lower() == 'y':
