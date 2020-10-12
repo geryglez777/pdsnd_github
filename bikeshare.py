@@ -38,7 +38,6 @@ def input_check(entry, list_to_compare):
             for letter in word:
                 if letter.lower() in entry.lower():
                     value += 1
-                word_ratio = np.abs((value / len(word)) - 1)
             letters_test.update({word: word_ratio})
 
         letters_match = min(letters_test.keys(), key = (lambda k: letters_test[k] ))
