@@ -136,13 +136,12 @@ def load_data(city, month, day):
     df = pd.read_csv(CITY_DATA[city])
     df['Start Time'] = pd.to_datetime(df['Start Time'])
     df['month'] = df['Start Time'].dt.month
-    df['day_of_week'] = df['Start Time'].dt.weekday_name
+    df['day_of_week'] = df['Start Time'].dt.day_name()
     df['hour'] = df['Start Time'].dt.hour
     df['trip'] = df['Start Station'] + ' to ' + df['End Station']
 
     if month.lower() != 'all':
         month = months.index(month) + 1
-
         df = df[df['month'] == month]
 
     if day.lower() != 'all':
@@ -276,8 +275,8 @@ def user_stats(df):
 
 def main():
     while True:
-        #city, month, day = get_filters()
-        df = load_data(*get_filters())
+        city, month, day = get_filters()
+        df = load_data(city, month, day)
         try:
             see_raw_data = input('Would you like to see 5 lines of raw data: y/n.\n ')
             if see_raw_data[0:1].lower() == 'y':
